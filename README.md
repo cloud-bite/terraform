@@ -2,6 +2,7 @@
 
 - Create group GCP project.
 - Create a Google Cloud Source Repository git repo and use it for the project together.
+- Fork this project to your own repositories and work in those together for the rest of the steps.
 - Invite team members to the project with relevant IAM roles assigned.
 - Create Terraform landing zone (initialize Terraform, connect with GCP backend) use Terraform for the next steps where it makes sense.
 - Create build pipeline for frontend and backend applications.
