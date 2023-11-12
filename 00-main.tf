@@ -27,6 +27,7 @@ resource "google_storage_bucket" "default" {
 }
 
 provider "google" {
+  credentials = file("./account.json")
   project = var.gcp_project
   region  = var.gcp_region
   zone    = var.gcp_zone

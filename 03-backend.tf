@@ -1,7 +1,9 @@
 resource "google_cloud_run_v2_service" "backend" {
   name = "backend"
-  location = var.gcp_project
+  location = var.gcp_region
+  
   template {
+    service_account = "terraform@cloud-temp-400907.iam.gserviceaccount.com"
     containers {
       image = "gcr.io/cloud-temp-400907/backend"
       ports {
@@ -27,6 +29,15 @@ resource "google_cloud_run_v2_service" "backend" {
       }
     }
   }
+}
+
+resource "google_cloud_run_service_iam_binding" "backend" {
+  location = google_cloud_run_v2_service.backend.location
+  service = google_cloud_run_v2_service.backend.name
+  role = "roles/run.invoker"
+  members = [
+    "allUsers"
+  ]
 }
 
 output "backend_url" {
