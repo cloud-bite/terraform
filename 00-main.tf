@@ -27,8 +27,8 @@ resource "google_storage_bucket" "default" {
 }
 
 provider "google" {
-  project = "cloud-temp-400907"
-  region  = "europe-north1"
-  zone    = "europe-north1-a"
+  project = var.gcp_project
+  region  = var.gcp_region
+  zone    = var.gcp_zone
 }
 
