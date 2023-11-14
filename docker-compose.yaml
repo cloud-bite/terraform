@@ -13,6 +13,8 @@ services:
     command: npm run start
     networks:
       - app-network
+    environment:
+      TEST_KEY: test
 
   # NestJS Backend Service
   nestjs-backend:
