@@ -9,12 +9,17 @@ resource "google_vpc_access_connector" "connector" {
   network = google_compute_network.private_network.name
 }
 
+resource "google_service_account" "backend_service_account" {
+  account_id = "backend-service-account-new"
+  display_name = "Backend Service Account"
+}
+
 resource "google_cloud_run_v2_service" "backend" {
   name = "backend"
   location = var.gcp_region
   
   template {
-    service_account = "terraform@cloud-temp-400907.iam.gserviceaccount.com"
+    service_account = google_service_account.backend_service_account.email
     containers {
       image = "gcr.io/cloud-temp-400907/backend"
       ports {
@@ -60,4 +65,10 @@ output "backend_url" {
   value = "${google_cloud_run_v2_service.backend.uri}"
 }
 
-# Create connection between SQL and cloud run.
+resource "google_project_iam_binding" "backend_secret_accessor" {
+  project = var.gcp_project
+  role = "roles/secretmanager.secretAccessor"
+  members = [
+    "serviceAccount:${google_service_account.backend_service_account.email}"
+  ]
+}
