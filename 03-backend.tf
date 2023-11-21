@@ -27,20 +27,20 @@ resource "google_cloud_run_v2_service" "backend" {
       }
 
       env {
-        name = "DB_HOST"
-        value = google_sql_database_instance.instance.private_ip_address # This is currently using the public IP; but should be transferred to the private when using the isolated VPC/network.
+        name = "DB_HOST_SECRET"
+        value = google_secret_manager_secret.db_host.id
       }
       env {
-        name = "DB_NAME"
-        value = google_sql_database.database.name
+        name = "DB_NAME_SECRET"
+        value = google_secret_manager_secret.db_name.id
       }
       env {
-        name = "DB_USER"
-        value = "root"
+        name = "DB_USER_SECRET"
+        value = google_secret_manager_secret.db_user.id
       }
       env {
-        name = "DB_PASS"
-        value = random_password.root_password.result
+        name = "DB_PASS_SECRET"
+        value = google_secret_manager_secret.db_pass.id
       }
     }
 
