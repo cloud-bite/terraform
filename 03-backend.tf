@@ -72,3 +72,20 @@ resource "google_project_iam_binding" "backend_secret_accessor" {
     "serviceAccount:${google_service_account.backend_service_account.email}"
   ]
 }
+resource "google_logging_project_sink" "backend-instance-sink" {
+  name        = "backend-logging-sink"
+  description = "This is the bucket containing the sink for logging the backend bucket"
+  destination = "storage.googleapis.com/${google_storage_bucket.gcs-logging-bucket.name}"
+  filter      = "resource.type = gce_instance AND resource.labels.instance_id = \"${google_cloud_run_v2_service.backend.id}\""
+
+  unique_writer_identity = true
+}
+
+resource "google_project_iam_binding" "gcs-bucket-backend-writer" {
+  project = var.gcp_project
+  role    = "roles/storage.objectCreator"
+
+  members = [
+    google_logging_project_sink.backend-instance-sink.writer_identity,
+  ]
+}
