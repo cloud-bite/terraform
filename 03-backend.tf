@@ -28,19 +28,19 @@ resource "google_cloud_run_v2_service" "backend" {
 
       env {
         name = "DB_HOST_SECRET"
-        value = google_secret_manager_secret.db_host.id
+        value = google_secret_manager_secret_version.db_host.id
       }
       env {
         name = "DB_NAME_SECRET"
-        value = google_secret_manager_secret.db_name.id
+        value = google_secret_manager_secret_version.db_name.id
       }
       env {
         name = "DB_USER_SECRET"
-        value = google_secret_manager_secret.db_user.id
+        value = google_secret_manager_secret_version.db_user.id
       }
       env {
         name = "DB_PASS_SECRET"
-        value = google_secret_manager_secret.db_pass.id
+        value = google_secret_manager_secret_version.db_pass.id
       }
     }
 
