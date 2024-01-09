@@ -2,6 +2,14 @@ resource "google_compute_global_address" "website" {
   name = "website-lb-ip"
 }
 
+resource "google_dns_managed_zone" "gcp_cb" {
+  name = "gcp-cb"
+  dns_name = "magnusjensen.dk."
+  dnssec_config {
+    state = "off"
+  }
+}
+
 resource "google_compute_backend_bucket" "website" {
   name = "website-backend"
   description = "Contains files needed by the website"
