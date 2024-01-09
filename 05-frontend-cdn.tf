@@ -37,9 +37,10 @@ resource "google_compute_url_map" "website" {
   default_service = google_compute_backend_bucket.website.id
 }
 
-resource "google_compute_target_http_proxy" "website" {
+resource "google_compute_target_https_proxy" "website" {
   name = "website-target-proxy"
   url_map = google_compute_url_map.website.id
+  ssl_certificates = [google_compute_managed_ssl_certificate.website.id]
 }
 
 resource "google_compute_global_forwarding_rule" "default" {
@@ -47,8 +48,8 @@ resource "google_compute_global_forwarding_rule" "default" {
   load_balancing_scheme = "EXTERNAL"
   ip_address = google_compute_global_address.website.address
   ip_protocol = "TCP"
-  port_range = "80"
-  target = google_compute_target_http_proxy.website.id
+  port_range = "443"
+  target = google_compute_target_https_proxy.website.id
 }
 
 # this logs all activity related to our "my-logged-instance" instance
