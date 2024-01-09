@@ -25,6 +25,13 @@ resource "google_compute_backend_bucket" "website" {
   enable_cdn = true
 }
 
+resource "google_compute_managed_ssl_certificate" "website" {
+  name = "website-cert"
+  managed {
+    domains = [google_dns_record_set.website.name]
+  }
+}
+
 resource "google_compute_url_map" "website" {
   name = "website-url-map"
   default_service = google_compute_backend_bucket.website.id
