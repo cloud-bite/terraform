@@ -10,6 +10,14 @@ resource "google_dns_managed_zone" "gcp_cb" {
   }
 }
 
+resource "google_dns_record_set" "website" {
+  name = "cloud.${google_dns_managed_zone.gcp_cb.dns_name}"
+  type = "A"
+  ttl = 300
+  managed_zone = google_dns_managed_zone.gcp_cb.name
+  rrdatas = [google_compute_global_address.website.address]
+}
+
 resource "google_compute_backend_bucket" "website" {
   name = "website-backend"
   description = "Contains files needed by the website"
