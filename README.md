@@ -1,4 +1,11 @@
 ## STEPS OF IMPLEMENTATION:
+
+### Assumption: 
+The steps for the implementation is how we have implemented our solution, and not how the terraform files are numerated.
+
+### Step 1:
+
+
 Going through the setup-steps of our solution, the first and most important step is allocating a bucket for storing the terraform state in the relevant GCP project. In the same file the required providers are set, in order to direct the terraform commands to the right place. This is done in the 00-main.tf-file, along with the setting of the three project variables; the gcp project, the gcp region, and the gcp zone.
 
 The second step in the process is setting up the SQL instance running in the project, responsible for receiving the orders sent by the frontend through the backend. The instance is added to the VPN where both the front- and backend are otherwise hosted. A private IP address is added to the instance making it accessible for the backend to query. Private (and random) credentials are added to the 02-sql.tf-file, in order to create a variable to use in setting the root user for the SQL instance. From here a Google hosted MySQL database is spun up, in order to host the data related to the application. The database is hosted on the same network as the other instances. Finally a root user is created for the database, along with some network connectivity configurations.
